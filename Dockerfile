@@ -11,5 +11,5 @@ USER appuser
 
 FROM base AS final
 WORKDIR /app
-COPY ./bin/Release/net5.0/publish .
+COPY ./publish .
 ENTRYPOINT ["dotnet", "fluffy-barnacle.dll"]
