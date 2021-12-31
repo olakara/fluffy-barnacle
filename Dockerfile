@@ -9,17 +9,6 @@ ENV ASPNETCORE_URLS=http://+:5000
 RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
 USER appuser
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0-focal AS build
-WORKDIR /src
-COPY ["fluffy-barnacle.csproj", "./"]
-RUN dotnet restore "fluffy-barnacle.csproj"
-COPY . .
-WORKDIR "/src/."
-RUN dotnet build "fluffy-barnacle.csproj" -c Release -o /app/build
-
-FROM build AS publish
-RUN dotnet publish "fluffy-barnacle.csproj" -c Release -o /app/publish
-
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
