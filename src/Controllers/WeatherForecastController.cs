@@ -27,21 +27,23 @@ namespace fluffy_barnacle.Controllers
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
-            _logger.LogInformation("Generating weather forcast...");
+            _logger.LogInformation("Generating weather forcast...");            
             
-            var randomGenerator = RandomNumberGenerator.Create();
-            byte[] data = new byte[16];
-            randomGenerator.GetBytes(data);
-
-            var time = DateTime.Now.Second;
-
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateTime.Now.AddDays(index),
-                TemperatureC = BitConverter.ToInt32(data),
+                TemperatureC = this.GetRandomNumber(),
                 Summary = Summaries[0]
             })
             .ToArray();
+        }
+
+        public int GetRandomNumber()
+        {
+            var randomGenerator = RandomNumberGenerator.Create();
+            byte[] data = new byte[16];
+            randomGenerator.GetBytes(data);
+            return BitConverter.ToInt32(data);
         }
     }
 }

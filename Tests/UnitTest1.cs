@@ -23,6 +23,18 @@ namespace Tests
         }
 
         [Fact]
+        public void GetRandomNumberFunctionWillGenerateRandomNumber()
+        {
+            var logger = Mock.Of<ILogger<WeatherForecastController>>();
+
+            var controller = new WeatherForecastController(logger);
+
+            var result = controller.GetRandomNumber();
+
+            Assert.IsType<int>(result);
+        }
+
+        [Fact]
         public void ValueControllerShouldReturnCorrectValue() {
 
             var logger = Mock.Of<ILogger<ValuesController>>();
