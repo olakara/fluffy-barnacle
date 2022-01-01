@@ -1,0 +1,30 @@
+name: .NET
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+          # Disabling shallow clone is recommended for improving relevancy of sonarqube reporting
+          fetch-depth: 0
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    - name: Restore dependencies
+      run: dotnet restore        
+    - name: Install SonarCloud scanner           
+      run: dotnet tool install --global dotnet-sonarscanner        
+    - name: Sonarqube Start
+      run: dotnet sonarscanner begin /k:"olakara_fluffy-barnacle" /o:"olakara" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+    - name: Build Project
+      run: dotnet build --no-restore -c Release 
+    - name: Test Project
+      run: dotnet test --no-build --verbosity normal
+    - name: Sonarqube End
+      run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
