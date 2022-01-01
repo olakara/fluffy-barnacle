@@ -28,7 +28,7 @@ jobs:
     - name: Build Project
       run: dotnet build --no-restore -c Release 
     - name: Test Project
-      run: dotnet test --verbosity normal --settings coverlet.runsettings --logger:trx
+      run: dotnet test --verbosity normal --logger:trx
     - name: Sonarqube End
       run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
     - name: Publish
