@@ -2,9 +2,11 @@ name: .NET
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
   build:
@@ -22,29 +24,22 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore        
     - name: Install SonarCloud scanner           
-      run: |
-        dotnet tool install --global dotnet-sonarscanner
-        dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
-    - name: Build and analyze
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}      
-      run: |
-        dotnet sonarscanner begin /k:"olakara_fluffy-barnacle" /o:"olakara" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
-    - name: Build
+      run: dotnet tool install --global dotnet-sonarscanner        
+    - name: Sonarqube Start
+      run: dotnet sonarscanner begin /k:"olakara_fluffy-barnacle" /o:"olakara" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+    - name: Build Project
       run: dotnet build --no-restore -c Release 
-    - name: Test
+    - name: Test Project
       run: dotnet test --no-build --verbosity normal
-    - name: Sonarqube end
+    - name: Sonarqube End
       run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
-    - name: Publish
+    - name: Publish Project
       run: dotnet publish -c Release -o publish
     - name: Build and Push Docker Image
       uses: mr-smithers-excellent/docker-build-push@v5
       with:
         image: olakara/fluffy-barnacle
-        registry: docker.io
-        addLatest: true
+        registry: docker.io        
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }} 
 
