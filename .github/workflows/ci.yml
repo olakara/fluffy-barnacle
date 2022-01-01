@@ -32,7 +32,7 @@ jobs:
     - name: Sonarqube End
       run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
     - name: Publish
-      run: dotnet publish -c Release -o publish
+      run: dotnet publish ./src/fluffy-barnacle.csproj -c Release -o publish
     - name: Build and Push Docker Image
       uses: mr-smithers-excellent/docker-build-push@v5
       with:
