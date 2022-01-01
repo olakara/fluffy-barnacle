@@ -29,7 +29,6 @@ namespace fluffy_barnacle.Controllers
         {
             _logger.LogInformation("Generating weather forcast...");
             
-            var rng = new Random();
             var randomGenerator = RandomNumberGenerator.Create();
             byte[] data = new byte[16];
             randomGenerator.GetBytes(data);
@@ -40,7 +39,7 @@ namespace fluffy_barnacle.Controllers
             {
                 Date = DateTime.Now.AddDays(index),
                 TemperatureC = BitConverter.ToInt32(data),
-                Summary = Summaries[time<<1]
+                Summary = Summaries[0]
             })
             .ToArray();
         }
