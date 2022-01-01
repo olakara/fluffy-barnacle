@@ -30,7 +30,7 @@ jobs:
     - name: Test Project
       run: dotnet test --collect:"XPlat Code Coverage" --logger:trx --verbosity normal 
     - name: Sonarqube End
-      run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" -d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx"
+      run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}" 
     - name: Publish
       run: dotnet publish ./src/fluffy-barnacle.csproj -c Release -o publish
     - name: Build and Push Docker Image
