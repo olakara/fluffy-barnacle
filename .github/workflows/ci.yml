@@ -28,7 +28,7 @@ jobs:
     - name: Build Project
       run: dotnet build --no-restore -c Release 
     - name: Test Project
-      run: dotnet test --collect:"XPlat Code Coverage" --logger:trx --verbosity normal 
+      run: dotnet test --collect:"XPlat Code Coverage" --logger:trx --verbosity normal  -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
     - name: Sonarqube End
       run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}" 
     - name: Publish
